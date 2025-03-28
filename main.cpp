@@ -157,17 +157,43 @@ void schedulerThread() {
 int main() {
     int n;
     cout << "Enter number of dungeon instances: ";
-    cin >> n;
+    while (!(cin >> n) || n < 0 || n > numeric_limits<int>::max() || cin.fail()) {
+        cout << "Invalid input. Enter a positive number of dungeon instances (max " << numeric_limits<int>::max() <<
+                "): ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
     cout << "Enter number of tanks: ";
-    cin >> tanks;
+    while (!(cin >> tanks) || tanks < 0 || tanks > numeric_limits<int>::max() || cin.fail()) {
+        cout << "Invalid input. Enter a positive number of tanks (max " << numeric_limits<int>::max() << "): ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
     cout << "Enter number of healers: ";
-    cin >> healers;
+    while (!(cin >> healers) || healers < 0 || healers > numeric_limits<int>::max() || cin.fail()) {
+        cout << "Invalid input. Enter a positive number of healers (max " << numeric_limits<int>::max() << "): ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
     cout << "Enter number of DPS: ";
-    cin >> dps;
+    while (!(cin >> dps) || dps < 0 || dps > numeric_limits<int>::max() || cin.fail()) {
+        cout << "Invalid input. Enter a positive number of DPS (max " << numeric_limits<int>::max() << "): ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
     cout << "Enter min dungeon time (t1): ";
-    cin >> t1;
+    while (!(cin >> t1) || t1 < 0 || t1 > numeric_limits<int>::max() || cin.fail()) {
+        cout << "Invalid input. Enter a positive min dungeon time (t1) (max " << numeric_limits<int>::max() << "): ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
     cout << "Enter max dungeon time (t2): ";
-    cin >> t2;
+    while (!(cin >> t2) || t2 < t1 || t2 > numeric_limits<int>::max() || cin.fail()) {
+        cout << "Invalid input. Enter a max dungeon time (t2) greater than or equal to t1 (max " << numeric_limits<
+            int>::max() << "): ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
 
     // Create instances and start threads
     for (int i = 1; i <= n; ++i) {
