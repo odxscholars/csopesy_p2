@@ -12,6 +12,7 @@ using namespace std;
 // Player pool
 int tanks, healers, dps;
 int t1, t2; // dungeon run time bounds
+int partyNum = 1;
 
 atomic<bool> stopFlag{false};
 
@@ -85,7 +86,6 @@ void instanceThread(shared_ptr<Instance> instance) {
 
         cout << "[Instance " << instance->id << "] Dungeon completed.\n";
 
-        // Notify scheduler there's a free instance now
         cv_scheduler.notify_all();
     }
 }
@@ -112,11 +112,12 @@ void schedulerThread() {
         for (auto &instance: instances) {
             if (!instance->hasParty && !instance->running &&
                 tanks >= 1 && healers >= 1 && dps >= 3) {
-                cout << "[Scheduler] Assigning party to instance " << instance->id << endl;
+                // cout << "[Scheduler] Assigning party "<< partyNum << " to instance " << instance->id << endl;
 
                 tanks--;
                 healers--;
                 dps -= 3;
+                partyNum++;
 
                 instance->hasParty = true;
                 instance->cv.notify_one();
@@ -217,8 +218,7 @@ int main() {
                                                                 : "empty") << endl;
             }
             cout << "Leftover players: Tanks: " << tanks << ", Healers: " << healers << ", DPS: " << dps << endl;
-            //check if scheduler thread is running
-            // cout << "Scheduler: " << (scheduler.joinable() ? "active" : "stopped") << endl;
+
         }
         this_thread::sleep_for(chrono::milliseconds(1000));
     }
@@ -234,6 +234,7 @@ int main() {
         cout << "Instance " << inst->id << " served " << inst->partiesServed
                 << " parties, total time: " << inst->totalTime << " seconds.\n";
     }
+    cout << "Leftover players: Tanks: " << tanks << ", Healers: " << healers << ", DPS: " << dps << endl;
 
     return 0;
 }
