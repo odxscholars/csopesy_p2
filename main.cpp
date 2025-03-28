@@ -6,7 +6,7 @@
 #include <chrono>
 #include <random>
 #include <atomic>
-
+#include<algorithm>
 using namespace std;
 
 // Player pool
